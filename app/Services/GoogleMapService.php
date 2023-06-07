@@ -11,7 +11,6 @@ class GoogleMapservice {
 
     public function __construct()
     {
-        //$this->baseUrl = 'https://maps.googleapis.com/maps/api/geocode/json';
         $this->baseUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
         $this->apiKey = env('GOOGLE_MAP_API_KEY');
     }
@@ -36,7 +35,19 @@ class GoogleMapservice {
     
             $data = json_decode($response->getBody(), true);
 
-            return $data;
+            $places = [];
+
+            foreach ($data['results'] as $result) {
+                $places[] = [
+                    'name' => $result['name'],
+                    'address' => $result['full_address'],
+                    'country' => $result['country'],
+                    'city' => $result['city'],
+                    'category' => $result['category'],                    
+                ];
+            }
+
+            return $places;
         }
 
         catch(Exception $e) {
