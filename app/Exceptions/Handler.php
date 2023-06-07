@@ -38,4 +38,15 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof \Illuminate\Http\Exceptions\ThrottleRequestsException) {
+            return response()->json([
+                'message' => 'Too many requests, please slow down!',
+            ], 429);
+        }
+
+        return parent::render($request, $exception);
+    }
 }

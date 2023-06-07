@@ -8,7 +8,7 @@ Route::prefix('v1')->group(function(){
     Route::post('login', [AuthController::class, 'login']);
     Route::post('signup', [AuthController::class, 'signup']);
 
-    Route::middleware('auth:sanctum')->group(function(){
+    Route::middleware(['auth:sanctum', 'throttle:5,1'])->group(function(){
         Route::get('places', [LocationController::class, 'nearbyPlaces']);
     });
 });
